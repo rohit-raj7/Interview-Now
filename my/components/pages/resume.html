@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume Keyword Extractor</title>
+</head>
+<body>
+  <h1>Upload Your Resume</h1>
+  <form id="resumeForm" enctype="multipart/form-data">
+    <input type="file" name="resume" required />
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>Extracted Keywords</h2>
+  <ul id="keywords"></ul>
+
+  <h2>Generated Interview Questions</h2>
+  <ul id="questions"></ul>
+
+  <script>
+    const form = document.getElementById('resumeForm');
+    const keywordsList = document.getElementById('keywords');
+    const questionsList = document.getElementById('questions');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      // Display keywords
+      keywordsList.innerHTML = '';
+      data.keywords.forEach(kw => {
+        const li = document.createElement('li');
+        li.textContent = kw;
+        keywordsList.appendChild(li);
+      });
+
+      // Display questions
+      questionsList.innerHTML = '';
+      data.questions.forEach(q => {
+        const li = document.createElement('li');
+        li.textContent = q;
+        questionsList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
