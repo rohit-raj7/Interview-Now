@@ -1,5 +1,5 @@
 import './globals.css';
-import HomePage from '@/components/pages/HomePage'; // ✅ renamed to HomePage
+import HomePage from '@/app/components/pages/HomePage'; // ✅ renamed to HomePage
 
 export default function Home() {
   return (
@@ -8,3 +8,5 @@ export default function Home() {
     </div>
   );
 }
+
+ 
