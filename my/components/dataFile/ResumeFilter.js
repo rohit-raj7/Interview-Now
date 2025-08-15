@@ -1,28 +1,4 @@
-// export function filterResumeData(resumeData, role, interviewType) {
-//   const { keywords, questions, text_preview } = resumeData;
-
-//   // Remove personal info
-//   const cleanText = text_preview
-//     .replace(/\b\d{10}\b/g, '[REDACTED PHONE]')
-//     .replace(/\S+@\S+\.\S+/g, '[REDACTED EMAIL]')
-//     .replace(/(LinkedIn|GitHub|Portfolio)/gi, '[REDACTED LINK]');
-
-//   // Unique + relevant questions
-//   const filteredQuestions = Array.from(new Set(questions))
-//     .filter(q => {
-//       return (
-//         q.toLowerCase().includes(role.toLowerCase()) ||
-//         q.toLowerCase().includes(interviewType.toLowerCase()) ||
-//         interviewType === 'HR' // allow general HR questions
-//       );
-//     });
-
-//   return {
-//     keywords,
-//     questions: filteredQuestions.length > 0 ? filteredQuestions : questions,
-//     cleanText
-//   };
-// }
+ 
 
 
 export function filterResumeData(resumeData, role, interviewType) {
@@ -31,7 +7,14 @@ export function filterResumeData(resumeData, role, interviewType) {
     return null;
   }
 
-  const { keywords, questions, text_preview } = resumeData;
+  const {
+    keywords = [],
+    technical_questions = [],
+    managerial_questions = [],
+    hr_questions = [],
+    questions = [],
+    text_preview = ""
+  } = resumeData;
 
   // Remove personal info
   const cleanText = text_preview
@@ -39,24 +22,42 @@ export function filterResumeData(resumeData, role, interviewType) {
     .replace(/\S+@\S+\.\S+/g, '[REDACTED EMAIL]')
     .replace(/(LinkedIn|GitHub|Portfolio)/gi, '[REDACTED LINK]');
 
-  // Unique + relevant questions
-  const filteredQuestions = Array.from(new Set(questions))
-    .filter(q => {
-      return (
-        q.toLowerCase().includes(role.toLowerCase()) ||
-        q.toLowerCase().includes(interviewType.toLowerCase()) ||
-        interviewType === 'HR' // allow general HR questions
-      );
-    });
-
-  const finalData = {
-    keywords,
-    questions: filteredQuestions.length > 0 ? filteredQuestions : questions,
-    cleanText
+  // Helper function to filter questions
+  const filterByRoleAndType = (arr) => {
+    return Array.from(new Set(arr)).filter(q =>
+      q.toLowerCase().includes(role.toLowerCase()) ||
+      q.toLowerCase().includes(interviewType.toLowerCase()) ||
+      interviewType.toLowerCase() === "hr" ||
+      interviewType.toLowerCase() === "technical" ||
+      interviewType.toLowerCase() === "managerial"
+    );
   };
 
-  // ✅ Log the result before returning
-  console.log("📄 Filtered Resume Data:", finalData);
+  // const finalData = {
+  //   keywords,
+  //   technical_questions: filterByRoleAndType(technical_questions),
+  //   managerial_questions: filterByRoleAndType(managerial_questions),
+  //   hr_questions: filterByRoleAndType(hr_questions),
+  //   general_questions: filterByRoleAndType(questions),
+  //   cleanText
+  // };
 
+  const finalData = {
+  keywords,
+  technical_questions: filterByRoleAndType(technical_questions),
+  managerial_questions: filterByRoleAndType(managerial_questions),
+  hr_questions: filterByRoleAndType(hr_questions),
+  general_questions: filterByRoleAndType(questions),
+  questions: [
+    ...filterByRoleAndType(technical_questions),
+    ...filterByRoleAndType(managerial_questions),
+    ...filterByRoleAndType(hr_questions),
+    ...filterByRoleAndType(questions)
+  ],
+  cleanText
+};
+
+
+  console.log("📄 Filtered Resume Data:", finalData);
   return finalData;
 }
