@@ -1,4 +1,6 @@
  
+
+
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { askGeminiQuestion } from '@/app/interview/GeminiApi';
@@ -6,11 +8,15 @@ import VoiceToText from '@/app/interview/VoiceToText.js';
 import InterviewerPanel from '../components/video/InterviewerPanel.js';
 import Header from '../components/video/Header.js';
 import CandidateVideo from '../components/video/CandidateVideo.js';
+import { useAppContext } from '../components/context/AppContext.js';
 
 const ELEVEN_API_KEY = 'sk_9af56462dc1d1c7e82f8bdfda993f16d82d9e7eb5d414fab';
 const ELEVEN_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';
 
-export default function VoiceInterview({ questions, resumeSummary, interviewType, onFinish }) {
+
+export default function VoiceInterview({ onFinish }) {
+  const { questions, resumeSummary, interviewType } = useAppContext();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [score, setScore] = useState(0);
@@ -20,8 +26,9 @@ export default function VoiceInterview({ questions, resumeSummary, interviewType
   const audioRef = useRef(null);
   const spokenIndices = useRef(new Set());
 
+  // Speak question with ElevenLabs (fallback → Web Speech)
   const speakQuestion = async (text, index) => {
-    if (spokenIndices.current.has(index)) return;
+    if (!text || spokenIndices.current.has(index)) return;
     spokenIndices.current.add(index);
 
     if (audioRef.current) {
@@ -29,8 +36,8 @@ export default function VoiceInterview({ questions, resumeSummary, interviewType
       audioRef.current = null;
     }
 
-    if (ELEVEN_API_KEY && ELEVEN_API_KEY.startsWith('sk_')) {
-      try {
+    try {
+      if (ELEVEN_API_KEY) {
         setSpeaking(true);
         const response = await fetch(
           `https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`,
@@ -50,25 +57,21 @@ export default function VoiceInterview({ questions, resumeSummary, interviewType
         if (!response.ok) throw new Error(`TTS request failed: ${response.status}`);
 
         const audioData = await response.arrayBuffer();
-        const audioBlob = new Blob([audioData], { type: 'audio/mpeg' });
-        const audioUrl = URL.createObjectURL(audioBlob);
+        const audioUrl = URL.createObjectURL(new Blob([audioData], { type: 'audio/mpeg' }));
         const audio = new Audio(audioUrl);
         audioRef.current = audio;
-
         audio.onended = () => setSpeaking(false);
         audio.play();
         return;
-      } catch (err) {
-        console.warn('⚠ ElevenLabs failed, using fallback:', err);
       }
+    } catch (err) {
+      console.warn('⚠ ElevenLabs failed, using fallback:', err);
     }
 
     if ('speechSynthesis' in window) {
       setSpeaking(true);
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = 'en-US';
-      utter.rate = 1;
-      utter.pitch = 1;
       utter.onend = () => setSpeaking(false);
       speechSynthesis.speak(utter);
     }
@@ -97,6 +100,7 @@ Return ONLY:
     const modelResponse = await askGeminiQuestion(prompt, resumeSummary, interviewType);
     const scoreMatch = modelResponse.match(/\d+/);
     const scoreVal = scoreMatch ? parseInt(scoreMatch[0], 10) : 0;
+
     setScore(prev => prev + scoreVal);
     setFeedback(modelResponse);
 
@@ -107,7 +111,7 @@ Return ONLY:
         setFeedback('');
       } else {
         setInterviewOver(true);
-        onFinish(score + scoreVal);
+        if (onFinish) onFinish(score + scoreVal);
       }
     }, 2500);
   };
@@ -117,6 +121,10 @@ Return ONLY:
       speakQuestion(questions[currentIndex], currentIndex);
     }
   }, [currentIndex, questions]);
+
+  if (!questions || questions.length === 0) {
+    return <div className="text-white text-center">⚠ No questions loaded. Please restart.</div>;
+  }
 
   if (interviewOver) {
     return (
@@ -129,12 +137,9 @@ Return ONLY:
 
   return (
     <div className="bg-gray-900 text-white flex flex-col">
-      {/* Top Bar */}
       <Header />
-
-      {/* Main Content */}
       <div className="flex flex-1 gap-4 p-4">
-        {/* Left: Interviewer */}
+        {/* Interviewer */}
         <div className="flex-1 rounded-lg border border-gray-700">
           <InterviewerPanel
             speaking={speaking}
@@ -144,7 +149,7 @@ Return ONLY:
           />
         </div>
 
-        {/* Right: Candidate */}
+        {/* Candidate */}
         <div className="flex-1 flex flex-col gap-4">
           <CandidateVideo />
 
@@ -158,7 +163,6 @@ Return ONLY:
                 onChange={(e) => setAnswer(e.target.value)}
                 className="w-full p-2 text-black rounded mt-2"
                 rows={3}
-                placeholder="Your answer will also appear here..."
               />
             )}
 
@@ -173,4 +177,5 @@ Return ONLY:
     </div>
   );
 }
+
  
