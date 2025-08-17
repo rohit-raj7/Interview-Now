@@ -1,9 +1,14 @@
+ 
+
+'use client';
+
 export default function CandidateVideo() {
   return (
     <section
       aria-label="Candidate video feed"
-      className="flex-1 rounded-lg border border-blue-500 relative bg-black select-none flex items-center justify-center"
+      className="w-full h-full bg-black border border-blue-500 relative flex items-center justify-center"
     >
+      {/* Fullscreen toggle button */}
       <div
         className="absolute top-3 left-3 bg-gray-800 rounded-full p-1 cursor-pointer hover:bg-gray-700"
         title="Toggle fullscreen"
@@ -24,7 +29,8 @@ export default function CandidateVideo() {
         </svg>
       </div>
 
-      <div className="w-full h-full bg-black/90 flex items-end justify-end rounded-lg p-4">
+      {/* Candidate feed placeholder */}
+      <div className="w-full h-full bg-black/90 flex items-end justify-end p-4">
         <span className="bg-gray-800 bg-opacity-80 text-gray-100 font-bold text-sm px-3 py-1 rounded select-none">
           Simple Kumar
         </span>
@@ -32,4 +38,3 @@ export default function CandidateVideo() {
     </section>
   );
 }
- 

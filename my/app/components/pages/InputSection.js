@@ -20,7 +20,6 @@ export default function InputSection() {
         </p>
 
         <div className="flex items-center gap-3">
-          {/* Input Field */}
           <input
             type="text"
             value={input}
@@ -47,3 +46,5 @@ export default function InputSection() {
     </div>
   );
 }
+
+ 
