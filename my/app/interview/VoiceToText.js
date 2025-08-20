@@ -1,7 +1,8 @@
+ 
 'use client';
 import { useState, useRef } from 'react';
 
-export default function VoiceToText() {
+export default function VoiceToText({ onTranscription }) {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef(null);
@@ -18,30 +19,36 @@ export default function VoiceToText() {
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = true;
-    recognition.interimResults = false;
+    recognition.interimResults = true; // live updates
 
     recognition.onstart = () => {
       console.log('🎤 Listening...');
       setListening(true);
+      setTranscript(''); // ✅ clear old transcript at start
     };
 
     recognition.onresult = (event) => {
-      if (event.results.length > 0) {
-        const text = event.results[event.results.length - 1][0].transcript.trim();
-        setTranscript((prev) => prev + ' ' + text);
-        console.log('📝 Transcript:', text);
+      let liveTranscript = '';
+      for (let i = 0; i < event.results.length; i++) {
+        liveTranscript += event.results[i][0].transcript;
+      }
+      setTranscript(liveTranscript.trim());
+
+      // 🔑 Send the full current transcript to parent
+      if (onTranscription) {
+        onTranscription(liveTranscript.trim());
       }
     };
 
     recognition.onerror = (event) => {
       console.warn('⚠ Error:', event.error);
+      if (event.error === 'no-speech') return; // ignore silence
       stopListening();
     };
 
     recognition.onend = () => {
-      if (listening) {
-        recognition.start(); // keep alive until user stops
-      }
+      console.log('🛑 Recognition ended');
+      setListening(false);
     };
 
     return recognition;
@@ -60,25 +67,11 @@ export default function VoiceToText() {
     }
   };
 
-  const stopListening = async () => {
+  const stopListening = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
+      recognitionRef.current = null; // reset instance
       setListening(false);
-    }
-
-    if (transcript.trim() !== '') {
-      try {
-        console.log('📤 Sending to API:', transcript);
-        const res = await fetch('/api/evaluate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: transcript }),
-        });
-        const data = await res.json();
-        console.log('✅ API Response:', data);
-      } catch (error) {
-        console.error('❌ API Error:', error);
-      }
     }
   };
 
@@ -93,11 +86,14 @@ export default function VoiceToText() {
         {listening ? '⏹ Stop Recording' : '🎤 Start Recording'}
       </button>
 
-      {transcript && (
-        <p className="mt-3 p-2 border rounded bg-gray-100 text-gray-800">
-          {transcript}
-        </p>
-      )}
+      {/* ✅ Always display transcript in one place */}
+      {/* <div className="mt-3 p-2 border rounded bg-gray-100 text-gray-800 min-h-[50px]">
+        {transcript || '🎙️ Speak to see transcript here...'}
+      </div> */}
     </div>
   );
 }
+
+ 
+
+ 
