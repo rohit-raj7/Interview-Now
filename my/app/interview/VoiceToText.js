@@ -1,53 +1,52 @@
  
-'use client';
-import { useState, useRef } from 'react';
 
-export default function VoiceToText({ onTranscription }) {
+'use client';
+import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
+
+const VoiceToText = forwardRef(({ onTranscription }, ref) => {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef(null);
+  const transcriptRef = useRef(''); // ✅ keeps live transcript safe
 
   const createRecognition = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert('❌ Speech Recognition not supported. Use Chrome/Edge or fallback API.');
+      alert('❌ Speech Recognition not supported.');
       return null;
     }
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.continuous = true;
-    recognition.interimResults = true; // live updates
+    recognition.continuous = false; // record per question
+    recognition.interimResults = true;
 
     recognition.onstart = () => {
-      console.log('🎤 Listening...');
       setListening(true);
-      setTranscript(''); // ✅ clear old transcript at start
+      setTranscript('');
+      transcriptRef.current = '';
     };
 
     recognition.onresult = (event) => {
-      let liveTranscript = '';
+      let live = '';
       for (let i = 0; i < event.results.length; i++) {
-        liveTranscript += event.results[i][0].transcript;
+        live += event.results[i][0].transcript;
       }
-      setTranscript(liveTranscript.trim());
+      transcriptRef.current = live.trim(); // ✅ latest words
+      setTranscript(live.trim());
+    };
 
-      // 🔑 Send the full current transcript to parent
-      if (onTranscription) {
-        onTranscription(liveTranscript.trim());
+    recognition.onend = () => {
+      setListening(false);
+      if (transcriptRef.current && onTranscription) {
+        onTranscription(transcriptRef.current); // ✅ final safe value
       }
     };
 
     recognition.onerror = (event) => {
       console.warn('⚠ Error:', event.error);
-      if (event.error === 'no-speech') return; // ignore silence
-      stopListening();
-    };
-
-    recognition.onend = () => {
-      console.log('🛑 Recognition ended');
       setListening(false);
     };
 
@@ -57,23 +56,23 @@ export default function VoiceToText({ onTranscription }) {
   const startListening = async () => {
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      if (!recognitionRef.current) {
-        recognitionRef.current = createRecognition();
-      }
+      recognitionRef.current = createRecognition();
       recognitionRef.current?.start();
     } catch (err) {
-      alert('❌ Microphone permission denied.');
-      console.error(err);
+      console.error('❌ Mic permission denied.', err);
     }
   };
 
   const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-      recognitionRef.current = null; // reset instance
-      setListening(false);
-    }
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    setListening(false);
   };
+
+  useImperativeHandle(ref, () => ({
+    startListening,
+    stopListening,
+  }));
 
   return (
     <div className="p-4">
@@ -86,14 +85,14 @@ export default function VoiceToText({ onTranscription }) {
         {listening ? '⏹ Stop Recording' : '🎤 Start Recording'}
       </button>
 
-      {/* ✅ Always display transcript in one place */}
-      {/* <div className="mt-3 p-2 border rounded bg-gray-100 text-gray-800 min-h-[50px]">
-        {transcript || '🎙️ Speak to see transcript here...'}
-      </div> */}
+      {/* Optional live transcript preview */}
+      {transcript && (
+        <div className="mt-2 text-gray-200 bg-gray-700 p-2 rounded">
+          {transcript}
+        </div>
+      )}
     </div>
   );
-}
+});
 
- 
-
- 
+export default VoiceToText;
