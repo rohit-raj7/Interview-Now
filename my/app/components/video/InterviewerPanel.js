@@ -6,7 +6,12 @@
 
 import Image from "next/image";
 
+
+import { useAppContext } from '../context/AppContext';
+
 export default function InterviewerPanel({ speaking, question, currentIndex, totalQuestions }) {
+ 
+    const { questions} = useAppContext();
   return (
     <section
       aria-label="Interviewer video and status"
@@ -44,3 +49,6 @@ export default function InterviewerPanel({ speaking, question, currentIndex, tot
     </section>
   );
 }
+
+
+ 
