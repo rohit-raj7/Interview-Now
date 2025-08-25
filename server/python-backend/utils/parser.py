@@ -9,3 +9,9 @@ def extract_text_from_resume(file):
     elif file.filename.endswith('.docx'):
         return docx2txt.process(file)
     return ""
+
+
+ 
+
+
+ 

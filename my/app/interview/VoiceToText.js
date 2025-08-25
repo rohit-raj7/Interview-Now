@@ -86,11 +86,11 @@ const VoiceToText = forwardRef(({ onTranscription }, ref) => {
       </button>
 
       {/* Optional live transcript preview */}
-      {transcript && (
+      {/* {transcript && (
         <div className="mt-2 text-gray-200 bg-gray-700 p-2 rounded">
           {transcript}
         </div>
-      )}
+      )} */}
     </div>
   );
 });

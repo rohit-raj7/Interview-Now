@@ -39,7 +39,7 @@ export default function InterviewerPanel({ speaking, question, currentIndex, tot
 
       {/* Watermark */}
       <div className="absolute bottom-4 right-4 bg-gray-800 bg-opacity-80 text-xs font-semibold text-gray-200 px-3 py-1 rounded">
-        ACEINT AI
+         AI
       </div>
     </section>
   );
