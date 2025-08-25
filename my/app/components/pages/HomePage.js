@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import Card from './Card';
 import LogoTitle from './LogoTitle';
-import InputSection from './InputSection';
+// import InputSection from './InputSection';
 import BottomNav from './BottomNav';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -28,7 +28,7 @@ export default function HomePage() {
       <div className="flex-1 flex flex-col items-center justify-center px-1 py-20 font-sans transition-all duration-300">
         <LogoTitle />
         <Card />
-        <InputSection />
+        {/* <InputSection /> */}
         <BottomNav />
       </div>
 
