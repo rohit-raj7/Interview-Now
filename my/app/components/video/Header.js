@@ -26,7 +26,7 @@ export default function Header({ onEndInterview, timeLeft }) {
 
         {/* Role Badge */}
         <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold text-blue-600 bg-blue-200 select-none">
-          Candidate
+          AI
         </span>
       </div>
 
