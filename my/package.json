@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
     "@google/generative-ai": "^0.24.1",
     "@react-oauth/google": "^0.12.2",
     "@tailwindcss/postcss": "^4.1.11",

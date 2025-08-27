@@ -7,11 +7,12 @@
 import { useState } from 'react';
 import Card from './Card';
 import LogoTitle from './LogoTitle';
-// import InputSection from './InputSection';
+
 import BottomNav from './BottomNav';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import { useAppContext } from "../context/AppContext";
+import Footer from './Footer';
 
 export default function HomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -30,6 +31,7 @@ export default function HomePage() {
         <Card />
         {/* <InputSection /> */}
         <BottomNav />
+       
       </div>
 
       {/* Sidebar Toggle Button - only show if user is logged in */}
@@ -51,6 +53,7 @@ export default function HomePage() {
         isVisible={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
+       <Footer/>
     </main>
   );
 }
