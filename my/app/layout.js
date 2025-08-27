@@ -1,38 +1,4 @@
  
-// import { Geist, Geist_Mono } from "next/font/google";
-// import "./globals.css";
-// import { AppProvider } from "@/app/components/context/AppContext"; 
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-// export const metadata = {
-//   title: "Gemini Voice Q&A",
-//   description: "Voice-based AI Q&A powered by Gemini",
-// };
-
-// export default function RootLayout({ children }) {
-//   return (
-//     <html lang="en">
-//       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-//         {/* ✅ Wrap the whole app in AppProvider */}
-//         <AppProvider>
-//           {children}
-//         </AppProvider>
-//       </body>
-//     </html>
-//   );
-// }
- 
-
- 
 
 
  
@@ -54,8 +20,8 @@ const clientId ="1068067220987-3mop9q9d36url20r3ei7qi8p8k4krvi5.apps.googleuserc
 
 
 export const metadata = {
-  title: "Gemini Voice Q&A",
-  description: "Voice-based AI Q&A powered by Gemini",
+  title: "Interview Now",
+  description: "Voice-based AI Interview powered by Interview Now",
 };
 
 export default function RootLayout({ children }) {
