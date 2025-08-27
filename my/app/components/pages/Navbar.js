@@ -41,7 +41,7 @@ export default function Navbar({ onLogoClick }) {
             user ? "hover:text-blue-400" : ""
           }`}
         >
-          MyApp
+          Interview Now
         </h1>
 
         <div className="flex gap-4 mr-9">
