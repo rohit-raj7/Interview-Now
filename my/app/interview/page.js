@@ -8,6 +8,7 @@ import Header from '../components/video/Header.js';
 import CandidateVideo from '../components/video/CandidateVideo.js';
 import { useAppContext } from '../components/context/AppContext.js';
 import ResultsPage from '../components/pages/ResultsPage.js';
+import ErrorAleart from './ErrorAlert.js'
 
 const ELEVEN_API_KEY = 'sk_9af56462dc1d1c7e82f8bdfda993f16d82d9e7eb5d414fab';
 const ELEVEN_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';
@@ -198,7 +199,8 @@ export default function VoiceInterview({ onFinish }) {
   if (!questions || questions.length === 0) {
    return ( 
   <div className="text-red-400 text-center font-medium mt-5">
-    Something went wrong. Please try uploading your resume again.
+    {/* Something went wrong. Please try uploading your resume again. */}
+    <ErrorAleart/>
   </div>
 );
  
