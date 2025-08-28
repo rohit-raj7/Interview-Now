@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "type": "commonjs",
-    "scripts": {
+  "type": "module",
+  "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "dependencies": {
     "concurrently": "^8.0.1",
+    "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
-    "http-proxy-middleware": "^3.0.5"
+    "http-proxy-middleware": "^3.0.5",
+    "mongoose": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
