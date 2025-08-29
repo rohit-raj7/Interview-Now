@@ -16,7 +16,7 @@ const ELEVEN_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';
 
 export default function VoiceInterview({ onFinish }) {
   const { questions, resumeSummary, interviewType, duration } = useAppContext();
-
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [interviewOver, setInterviewOver] = useState(false);
@@ -187,14 +187,9 @@ export default function VoiceInterview({ onFinish }) {
     const s = (sec % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   };
-
-  // ⚡ Show blank screen while loading score
+ 
   if (loadingScore) {
-    return (
-      // <div className="flex items-center justify-center h-screen w-screen bg-black text-white text-2xl font-bold">
-      //   Loading your score...
-      // </div>
-
+    return ( 
        <>
        <LoadingScreen />
        </>
@@ -203,8 +198,7 @@ export default function VoiceInterview({ onFinish }) {
 
   if (!questions || questions.length === 0) {
    return ( 
-  <div className="text-red-400 text-center font-medium mt-5">
-    {/* Something went wrong. Please try uploading your resume again. */}
+  <div className="text-red-400 text-center font-medium mt-5"> 
     <ErrorAleart/>
   </div>
 );
@@ -252,3 +246,5 @@ export default function VoiceInterview({ onFinish }) {
     </div>
   );
 }
+
+ 

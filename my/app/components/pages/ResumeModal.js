@@ -210,7 +210,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                 type="button"
                 onClick={requestCameraAccess}
                 disabled={checkingCamera}
-                className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white font-medium"
+                className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600  text-white font-medium"
               >
                 {checkingCamera ? 'Checking...' : 'Allow Camera'}
               </button>
@@ -269,3 +269,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     </div>
   );
 }
+
+ 
+
+ 
