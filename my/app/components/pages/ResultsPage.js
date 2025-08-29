@@ -9,7 +9,7 @@ export default function ResultsPage({ evaluations }) {
   const { user, questions, resumeData } = useAppContext(); 
   const [error, setError] = useState(null);
 
-  const API_URL="http://localhost:4000";
+  const API_URL="https://interview-node-eta.vercel.app" || "http://localhost:4000";
 
   const handleExit = () => {
     window.location.href = '/';
