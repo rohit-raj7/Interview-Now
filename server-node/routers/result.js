@@ -71,4 +71,23 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+
+// Get a single result by ID
+router.get("/detail/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Result.findById(id);
+
+    if (!result) {
+      return res.status(404).json({ error: "Result not found" });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error("❌ Error fetching result:", error);
+    res.status(500).json({ error: "Error fetching result" });
+  }
+});
+
 export default router;
