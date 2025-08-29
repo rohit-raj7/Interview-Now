@@ -9,6 +9,7 @@ import CandidateVideo from '../components/video/CandidateVideo.js';
 import { useAppContext } from '../components/context/AppContext.js';
 import ResultsPage from '../components/pages/ResultsPage.js';
 import ErrorAleart from './ErrorAlert.js'
+import LoadingScreen from './LoadingScreen.js'
 
 const ELEVEN_API_KEY = 'sk_9af56462dc1d1c7e82f8bdfda993f16d82d9e7eb5d414fab';
 const ELEVEN_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';
@@ -190,9 +191,13 @@ export default function VoiceInterview({ onFinish }) {
   // ⚡ Show blank screen while loading score
   if (loadingScore) {
     return (
-      <div className="flex items-center justify-center h-screen w-screen bg-black text-white text-2xl font-bold">
-        Loading your score...
-      </div>
+      // <div className="flex items-center justify-center h-screen w-screen bg-black text-white text-2xl font-bold">
+      //   Loading your score...
+      // </div>
+
+       <>
+       <LoadingScreen />
+       </>
     );
   }
 

@@ -7,8 +7,8 @@ import { useAppContext } from '../context/AppContext';
 import { uploadResume } from '@/app/interview/DataResume.js';
 import { filterResumeData } from '@/app/interview/ResumeFilter';
 import Modal from "../pages/Modal.js";
-import { GoogleLogin } from "@react-oauth/google"; // ✅ import Google login
-import { jwtDecode } from "jwt-decode"; // ✅ decode JWT
+import { GoogleLogin } from "@react-oauth/google";  
+import { jwtDecode } from "jwt-decode"; 
 
 export default function ResumeModal({ isOpen, onClose }) {
   const router = useRouter();
