@@ -52,4 +52,23 @@ router.get("/:identifier", async (req, res) => {
   }
 });
 
+
+
+// Delete result by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await Result.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Result not found" });
+    }
+
+    res.json({ message: "✅ Result deleted successfully!" });
+  } catch (error) {
+    console.error("❌ Error deleting result:", error);
+    res.status(500).json({ error: "Error deleting result" });
+  }
+});
+
 export default router;
