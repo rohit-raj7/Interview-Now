@@ -7,6 +7,8 @@ export async function uploadResume(resumeFile) {
   const api = 'https://pyhon-backend.onrender.com'
            || 'https://interview-now1-1.onrender.com';
 
+ 
+
   const res = await fetch(`${api}/upload`, {
     method: 'POST',
     body: formData,

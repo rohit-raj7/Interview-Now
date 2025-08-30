@@ -14,7 +14,7 @@ export default function ResumeModal({ isOpen, onClose }) {
   const router = useRouter();
   const {
     user,
-    setUser,        // ✅ make sure AppContext provides this
+    setUser,       
     setResumeData,
     setQuestions,
     setResumeSummary,
@@ -76,8 +76,10 @@ export default function ResumeModal({ isOpen, onClose }) {
           interviewType
         );
 
+        
+
         setResumeSummary(cleanText);
-        setQuestions(generatedQuestions || []);
+        setQuestions(generatedQuestions || []); 
         setInterviewType(interviewType);
 
         router.push('/interview');
@@ -271,5 +273,4 @@ export default function ResumeModal({ isOpen, onClose }) {
 }
 
  
-
  

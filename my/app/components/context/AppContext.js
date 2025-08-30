@@ -10,8 +10,9 @@ export function AppProvider({ children }) {
   const [questions, setQuestions] = useState([]);
   const [resumeSummary, setResumeSummary] = useState('');
   const [interviewType, setInterviewType] = useState('');
-  const [user, setUser] = useState(null); // ✅ add user state
-
+  const [user, setUser] = useState(null); 
+  
+  
   return (
     <AppContext.Provider value={{ 
       resumeData, setResumeData,

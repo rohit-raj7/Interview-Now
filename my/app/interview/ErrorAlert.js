@@ -35,7 +35,7 @@ export default function Alert({ type = "error", message }) {
       {/* Button */}
       <button
         onClick={handleGoHome}
-        className="mt-6 px-5 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition"
+        className="mt-6 px-5 py-2 cursor-pointer rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition"
       >
         Go Home
       </button>

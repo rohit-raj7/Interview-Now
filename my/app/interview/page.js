@@ -198,14 +198,13 @@ export default function VoiceInterview({ onFinish }) {
 
   if (!questions || questions.length === 0) {
    return ( 
-  <div className="text-red-400 text-center font-medium mt-5"> 
+    <div>
+      Quesiont not loading
     <ErrorAleart/>
   </div>
 );
+}
  
-
-  }
-
   if (interviewOver && evaluations) {
     return <ResultsPage evaluations={evaluations} />;
   }
@@ -235,11 +234,11 @@ export default function VoiceInterview({ onFinish }) {
           <CandidateVideo />
           <div className="p-4 bg-gray-800 border-t border-gray-700">
             <VoiceToText ref={micRef} onTranscription={handleTranscription} />
-            {answers[currentIndex] && (
+            {/* {answers[currentIndex] && (
               <div className="t-2 text-gray-200 bg-gray-700 p-2 rounded">
                 {answers[currentIndex]}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
