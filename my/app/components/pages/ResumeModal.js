@@ -76,13 +76,12 @@ export default function ResumeModal({ isOpen, onClose }) {
           interviewType
         );
 
-        
-
         setResumeSummary(cleanText);
         setQuestions(generatedQuestions || []); 
         setInterviewType(interviewType);
-
+        
         router.push('/interview');
+        
       }
     } catch (error) {
       console.error('❌ Upload error:', error);
@@ -273,4 +272,4 @@ export default function ResumeModal({ isOpen, onClose }) {
 }
 
  
- 
+  
