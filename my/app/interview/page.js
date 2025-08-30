@@ -11,7 +11,7 @@ import ResultsPage from '../components/pages/ResultsPage.js';
 import ErrorAleart from './ErrorAlert.js'
 import LoadingScreen from './LoadingScreen.js'
 
-const ELEVEN_API_KEY = 'sk_9af56462dc1d1c7e82f8bdfda993f16d82d9e7eb5d414fab' || 'sk_711b4b97e3b915f816187d17c7e7a21d3a6164fd0536ea38';
+const ELEVEN_API_KEY = 'sk_711b4b97e3b915f816187d17c7e7a21d3a6164fd0536ea38' || 'sk_9af56462dc1d1c7e82f8bdfda993f16d82d9e7eb5d414fab';
 
 const ELEVEN_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';
 
