@@ -1,11 +1,10 @@
-
-
+ 
+  
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '../context/AppContext';
 import { uploadResume } from '@/app/interview/DataResume.js';
-import { filterResumeData } from '@/app/interview/ResumeFilter';
 import Modal from "../pages/Modal.js";
 import { GoogleLogin } from "@react-oauth/google";  
 import { jwtDecode } from "jwt-decode"; 
@@ -41,7 +40,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     }
   };
 
-  // ✅ handle Google login success
+  // ✅ Google login success
   const handleLoginSuccess = (credentialResponse) => {
     try {
       const decoded = jwtDecode(credentialResponse.credential);
@@ -53,10 +52,10 @@ export default function ResumeModal({ isOpen, onClose }) {
     }
   };
 
+  // ✅ Submit form and get questions directly from backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ check login first
     if (!user) {
       setShowLogin(true);
       return;
@@ -66,22 +65,32 @@ export default function ResumeModal({ isOpen, onClose }) {
 
     setLoading(true);
     try {
-      const data = await uploadResume(resumeFile);
+      const data = await uploadResume(resumeFile); // Backend returns { hr_questions, technical_questions, managerial_questions, keywords }
       if (data) {
         setResumeData(data);
 
-        const { cleanText, questions: generatedQuestions } = filterResumeData(
-          data,
-          role,
-          interviewType
-        );
+        // ✅ Pick only the selected type of questions
+        let selectedQuestions = [];
+        if (interviewType === "HR") {
+          selectedQuestions = data.hr_questions || [];
+        } else if (interviewType === "Technical") {
+          selectedQuestions = data.technical_questions || [];
+        } else if (interviewType === "Managerial") {
+          selectedQuestions = data.managerial_questions || [];
+        } else if (interviewType === "Coding") {
+          // fallback static coding questions if backend doesn’t provide
+          selectedQuestions = data.coding_questions || [
+            "Write a program to reverse a string.",
+            "Explain time complexity of binary search.",
+            "Solve Two Sum problem."
+          ];
+        }
 
-        setResumeSummary(cleanText);
-        setQuestions(generatedQuestions || []); 
+        setResumeSummary(data.cleanText || ""); 
+        setQuestions(selectedQuestions);
         setInterviewType(interviewType);
-        
+
         router.push('/interview');
-        
       }
     } catch (error) {
       console.error('❌ Upload error:', error);
@@ -90,7 +99,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     }
   };
 
-  // validate form
+  // ✅ Validate form
   useEffect(() => {
     setIsFormValid(
       role.trim() !== '' &&
@@ -102,7 +111,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     );
   }, [role, interviewType, duration, resumeFile, termsAccepted, cameraAllowed]);
 
-  // ask for camera
+  // ✅ Ask for camera
   const requestCameraAccess = async () => {
     setCheckingCamera(true);
     try {
@@ -161,6 +170,7 @@ export default function ResumeModal({ isOpen, onClose }) {
               <option value="">Select</option>
               <option value="Technical">Technical</option>
               <option value="HR">HR</option>
+              <option value="Managerial">Managerial</option>
               <option value="Coding">Coding</option>
             </select>
           </div>
@@ -262,8 +272,7 @@ export default function ResumeModal({ isOpen, onClose }) {
               }`}
             disabled={!isFormValid || loading}
           >
-            {loading ? "Finding Best Questions..." : "Start Interview"}
-
+            {loading ? "Fetching Questions..." : "Start Interview"}
           </button>
         </form>
       </div>
@@ -271,5 +280,7 @@ export default function ResumeModal({ isOpen, onClose }) {
   );
 }
 
+
+
+
  
-  

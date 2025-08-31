@@ -36,3 +36,44 @@ Also give a Final Total Score at the end.
     return "Evaluation failed. Please retry.";
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// export async function evaluateAnswerWithGemini(question, candidateAnswer, resumeSummary, interviewType) {
+//   const prompt = `
+// You are a professional ${interviewType} interviewer.
+// Question: ${question}
+// Candidate's Answer: ${candidateAnswer}
+// Resume Summary: ${resumeSummary}
+
+// Return STRICTLY in this format:
+// Score: X/10
+// Feedback: <short constructive feedback>
+//   `;
+
+//   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+//   const result = await model.generateContent(prompt);
+//   return result.response.text();
+// }
+ 
