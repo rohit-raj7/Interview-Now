@@ -1,10 +1,11 @@
- 
+
 'use client';
 
 import React, { useState, useEffect } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useAppContext } from "../context/AppContext.js";
+import InLogo from './InterviewNow.js'
 import Modal from "./Modal";
 
 export default function Navbar({ onLogoClick }) {
@@ -50,15 +51,17 @@ export default function Navbar({ onLogoClick }) {
     <>
       {/* Navbar */}
       <nav className="w-full bg-gray-800 text-gray-100 flex justify-between items-center px-6 py-3 shadow-md fixed top-0 left-0 z-40">
-        {/* Logo / Brand */}
-        <h1
-          onClick={onLogoClick}
-          className={`text-xl font-bold tracking-wide cursor-pointer ${
-            user ? "hover:text-blue-400" : ""
-          }`}
-        >
-          Interview Now
-        </h1>
+
+
+        {/* <div className=' cursor-pointer' >
+           <InLogo/> 
+           </div> */}
+        <div className="cursor-pointer flex items-center" onClick={onLogoClick}>
+          <div className="w-12 h-12">
+            <InLogo />
+          </div>
+        </div>
+
 
         <div className="flex gap-4 mr-9">
           {!user && (
