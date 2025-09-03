@@ -12,6 +12,10 @@ An end-to-end AI interview platform where candidates can upload resumes, select 
 * **Security & Auth**: JWT authentication, role-based access, upload scanning, and signed URLs for media.
 * **Analytics & Monitoring**: Logs, latency metrics, STT accuracy, and session replay for audit.
 
+--
+
+## Live Project : https://ai-interviewnow.vercel.app/
+--
 ## Tech Stack
 
 * **Frontend**: Next.js, React, Tailwind CSS
